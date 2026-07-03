@@ -16,8 +16,6 @@
     </properties>
 
     <dependencies>
-
-        <!-- Jackson for JSON parsing -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -25,7 +23,10 @@
         </dependency>
 
     </dependencies>
+
     <build>
+        <sourceDirectory>${basedir}</sourceDirectory>
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
