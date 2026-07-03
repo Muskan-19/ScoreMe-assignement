@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "priority": 10,
+      "cpu": 2,
+      "ram": 4,
+      "gpu": 1,
+      "network": 3,
+      "slaWindow": [1, 2],
+      "conflicts": ["T2"]
+    },
+    {
+      "id": "T2",
+      "priority": 8,
+      "cpu": 2,
+      "ram": 2,
+      "gpu": 0,
+      "network": 2,
+      "slaWindow": [2],
+      "conflicts": ["T1"]
+    },
+    {
+      "id": "T3",
+      "priority": 6,
+      "cpu": 1,
+      "ram": 2,
+      "gpu": 0,
+      "network": 1,
+      "slaWindow": [1, 2],
+      "conflicts": []
+    },
+    {
+      "id": "T4",
+      "priority": 5,
+      "cpu": 3,
+      "ram": 3,
+      "gpu": 1,
+      "network": 2,
+      "slaWindow": [1],
+      "conflicts": []
+    }
+  ],
+  "slots": [
+    {
+      "id": 1,
+      "cpu": 6,
+      "ram": 8,
+      "gpu": 2,
+      "network": 8
+    },
+    {
+      "id": 2,
+      "cpu": 5,
+      "ram": 6,
+      "gpu": 1,
+      "network": 6
+    }
+  ]
+}
