@@ -42,8 +42,8 @@ public class Scheduler {
                 boolean conflict = false;
 
                 for (Task t : slot.getAssignedTasks()) {
-
-                    if (task.getConflicts().contains(t.getId())) {
+                    if (task.getConflicts().contains(t.getId())
+                            || t.getConflicts().contains(task.getId())) {
 
                         conflict = true;
                         break;
