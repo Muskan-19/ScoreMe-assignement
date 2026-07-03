@@ -2,7 +2,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        // Benchmark mode
         if (args.length > 0 && args[0].equalsIgnoreCase("benchmark")) {
 
             Benchmark.runBenchmark();
@@ -10,10 +9,10 @@ public class Main {
             return;
         }
 
-        // Normal scheduling mode
-
-        SchedulingInstance instance =
+        SchedulingInstance raw =
                 InputParser.parse("input.json");
+
+        BuiltInstance instance = raw.toBuiltInstance();
 
         long start = System.currentTimeMillis();
 
