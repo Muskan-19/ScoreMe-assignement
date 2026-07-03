@@ -29,46 +29,65 @@ public class Benchmark {
 
         };
 
-        PrintWriter writer =
-                new PrintWriter(new FileWriter("benchmark_results.csv"));
+        // FIX: try-with-resources so the writer is always closed/flushed,
+        // even if an exception happens partway through the loop.
+        try (PrintWriter writer =
+                     new PrintWriter(new FileWriter("benchmark_results.csv"))) {
 
-        writer.println("Tasks,Penalty,Runtime,Feasible");
+            writer.println("Tasks,Penalty,Runtime,Feasible,Status");
 
-        for(int i=0;i<files.length;i++){
+            for (int i = 0; i < files.length; i++) {
 
-            SchedulingInstance instance =
-                    InputParser.parse(files[i]);
+                // FIX: previously, one missing/bad file (e.g. a benchmark
+                // JSON that doesn't exist yet) threw an uncaught exception
+                // and killed the entire benchmark run -- every remaining
+                // instance silently never got a result. Each instance is
+                // now isolated: a failure is recorded as a row instead of
+                // aborting everything after it.
+                try {
 
-            long start =
-                    System.currentTimeMillis();
+                    SchedulingInstance instance =
+                            InputParser.parse(files[i]);
 
-            Scheduler scheduler =
-                    new Scheduler(instance);
+                    long start =
+                            System.currentTimeMillis();
 
-            Scheduler.Result result =
-                    scheduler.schedule();
+                    Scheduler scheduler =
+                            new Scheduler(instance);
 
-            long end =
-                    System.currentTimeMillis();
+                    Scheduler.Result result =
+                            scheduler.schedule();
 
-            writer.println(
+                    long end =
+                            System.currentTimeMillis();
 
-                    tasks[i] + ","
-                            + result.penalty() + ","
-                            + (end-start) + ","
-                            + result.feasible()
+                    writer.println(
 
-            );
+                            tasks[i] + ","
+                                    + result.penalty() + ","
+                                    + (end - start) + ","
+                                    + result.feasible() + ","
+                                    + "OK"
 
-            System.out.println(files[i] + " completed.");
+                    );
+
+                    System.out.println(files[i] + " completed.");
+
+                } catch (Exception e) {
+
+                    writer.println(
+                            tasks[i] + ",,,,"
+                                    + "FAILED: " + e.getClass().getSimpleName() + ": " + e.getMessage()
+                    );
+
+                    System.out.println(files[i] + " FAILED: " + e.getMessage());
+                }
+            }
+
+            System.out.println("benchmark_results.csv generated successfully.");
+            System.out.println("Use Excel or Google Sheets to create the required charts.");
+            System.out.println("Benchmark completed.");
         }
-
-        writer.close();
-
-       System.out.println("benchmark_results.csv generated successfully.");
-       System.out.println("Use Excel or Google Sheets to create the required charts.");
-
-        System.out.println("Benchmark completed.");
     }
 
 }
