@@ -28,22 +28,12 @@ public class Benchmark {
                 200,200,200
 
         };
-
-        // FIX: try-with-resources so the writer is always closed/flushed,
-        // even if an exception happens partway through the loop.
         try (PrintWriter writer =
                      new PrintWriter(new FileWriter("benchmark_results.csv"))) {
 
             writer.println("Tasks,Penalty,Runtime,Feasible,Status");
 
             for (int i = 0; i < files.length; i++) {
-
-                // FIX: previously, one missing/bad file (e.g. a benchmark
-                // JSON that doesn't exist yet) threw an uncaught exception
-                // and killed the entire benchmark run -- every remaining
-                // instance silently never got a result. Each instance is
-                // now isolated: a failure is recorded as a row instead of
-                // aborting everything after it.
                 try {
 
                     SchedulingInstance instance =
