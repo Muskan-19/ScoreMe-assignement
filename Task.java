@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.List;
 
 public class Task {
@@ -41,10 +42,9 @@ public class Task {
     }
 
     public List<Integer> getSlaWindow() {
-        return slaWindow;
+        return slaWindow == null ? Collections.emptyList() : slaWindow;
     }
-
     public List<String> getConflicts() {
-        return conflicts;
+        return conflicts == null ? Collections.emptyList() : conflicts;
     }
 }
