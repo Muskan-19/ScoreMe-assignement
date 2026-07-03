@@ -1,13 +1,21 @@
 public class Main {
 
-    public static void main(String[] args)
-            throws Exception {
+    public static void main(String[] args) throws Exception {
+
+        // Benchmark mode
+        if (args.length > 0 && args[0].equalsIgnoreCase("benchmark")) {
+
+            Benchmark.runBenchmark();
+
+            return;
+        }
+
+        // Normal scheduling mode
 
         SchedulingInstance instance =
                 InputParser.parse("input.json");
 
-        long start =
-                System.currentTimeMillis();
+        long start = System.currentTimeMillis();
 
         Scheduler scheduler =
                 new Scheduler(instance);
@@ -15,8 +23,7 @@ public class Main {
         Scheduler.Result result =
                 scheduler.schedule();
 
-        long end =
-                System.currentTimeMillis();
+        long end = System.currentTimeMillis();
 
         OutputGenerator.write(
                 "output.json",
@@ -27,6 +34,6 @@ public class Main {
                 result.violationReason()
         );
 
-        System.out.println("Scheduling Complete");
+        System.out.println("Scheduling completed.");
     }
 }
