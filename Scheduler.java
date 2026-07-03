@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Scheduler {
 
-    private final SchedulingInstance instance;
+    private final BuiltInstance instance;
 
     private Map<String, Integer> assignment =
             new LinkedHashMap<>();
@@ -11,7 +11,7 @@ public class Scheduler {
 
     private String violationReason = "";
 
-    public Scheduler(SchedulingInstance instance) {
+    public Scheduler(BuiltInstance instance) {
         this.instance = instance;
     }
 
@@ -21,7 +21,7 @@ public class Scheduler {
                 new ArrayList<>(instance.getTasks());
 
         tasks.sort((a, b) ->
-                Integer.compare(b.getPriority(), a.getPriority()));
+                Double.compare(b.getPriority(), a.getPriority()));
 
         double totalPenalty = 0;
 
@@ -33,7 +33,7 @@ public class Scheduler {
 
             for (ProcessingSlot slot : instance.getSlots()) {
 
-                if (!task.getSlaWindow().contains(slot.getId()))
+                if (!task.isWithinWindow(slot.getId()))
                     continue;
 
                 if (!slot.canAssign(task))
@@ -42,6 +42,7 @@ public class Scheduler {
                 boolean conflict = false;
 
                 for (Task t : slot.getAssignedTasks()) {
+
                     if (task.getConflicts().contains(t.getId())
                             || t.getConflicts().contains(task.getId())) {
 
