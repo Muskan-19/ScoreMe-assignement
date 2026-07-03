@@ -5,46 +5,68 @@ public class ProcessingSlot {
 
     private int id;
 
-    private int cpu;
-    private int ram;
-    private int gpu;
-    private int network;
+    private double cpu;
+    private double ram;
+    private double gpu;
+    private double network;
 
-    private int usedCpu = 0;
-    private int usedRam = 0;
-    private int usedGpu = 0;
-    private int usedNetwork = 0;
+    private double usedCpu = 0;
+    private double usedRam = 0;
+    private double usedGpu = 0;
+    private double usedNetwork = 0;
 
     private List<Task> assignedTasks = new ArrayList<>();
 
     public int getId() {
         return id;
     }
-    public int getCpu() {
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getCpu() {
         return cpu;
     }
 
-    public int getRam() {
+    public void setCpu(double cpu) {
+        this.cpu = cpu;
+    }
+
+    public double getRam() {
         return ram;
     }
 
-    public int getGpu() {
+    public void setRam(double ram) {
+        this.ram = ram;
+    }
+
+    public double getGpu() {
         return gpu;
     }
 
-    public int getNetwork() {
+    public void setGpu(double gpu) {
+        this.gpu = gpu;
+    }
+
+    public double getNetwork() {
         return network;
+    }
+
+    public void setNetwork(double network) {
+        this.network = network;
     }
 
     public boolean canAssign(Task task) {
 
-        return usedCpu + task.getCpu() <= cpu
+        double eps = 1e-9;
+        return usedCpu + task.getCpu() <= cpu + eps
                 &&
-                usedRam + task.getRam() <= ram
+                usedRam + task.getRam() <= ram + eps
                 &&
-                usedGpu + task.getGpu() <= gpu
+                usedGpu + task.getGpu() <= gpu + eps
                 &&
-                usedNetwork + task.getNetwork() <= network;
+                usedNetwork + task.getNetwork() <= network + eps;
     }
 
     public void assign(Task task) {
@@ -57,9 +79,18 @@ public class ProcessingSlot {
         usedNetwork += task.getNetwork();
     }
 
+    public void unassign(Task task) {
+        assignedTasks.remove(task);
+        usedCpu -= task.getCpu();
+        usedRam -= task.getRam();
+        usedGpu -= task.getGpu();
+        usedNetwork -= task.getNetwork();
+    }
+
     public List<Task> getAssignedTasks() {
         return assignedTasks;
     }
+
     public double getLoadRatio() {
 
         double c = cpu == 0 ? 1 : cpu;
