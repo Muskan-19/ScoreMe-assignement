@@ -2,7 +2,6 @@ public class PenaltyCalculator {
 
     public static double penalty(Task task,
                                  ProcessingSlot slot) {
-
         double priorityPenalty =
                 task.getPriority() * slot.getLoadRatio();
 
