@@ -65,7 +65,8 @@ public class Benchmark {
 
         writer.close();
 
-        ChartGenerator.generateCharts("benchmark_results.csv");
+       System.out.println("benchmark_results.csv generated successfully.");
+       System.out.println("Use Excel or Google Sheets to create the required charts.");
 
         System.out.println("Benchmark completed.");
     }
