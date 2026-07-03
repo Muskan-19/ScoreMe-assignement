@@ -20,6 +20,21 @@ public class ProcessingSlot {
     public int getId() {
         return id;
     }
+    public int getCpu() {
+        return cpu;
+    }
+
+    public int getRam() {
+        return ram;
+    }
+
+    public int getGpu() {
+        return gpu;
+    }
+
+    public int getNetwork() {
+        return network;
+    }
 
     public boolean canAssign(Task task) {
 
@@ -45,8 +60,7 @@ public class ProcessingSlot {
     public List<Task> getAssignedTasks() {
         return assignedTasks;
     }
-
-    public double loadRatio() {
+    public double getLoadRatio() {
 
         double c = cpu == 0 ? 1 : cpu;
         double r = ram == 0 ? 1 : ram;
